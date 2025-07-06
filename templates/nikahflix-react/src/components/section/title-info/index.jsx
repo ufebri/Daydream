@@ -44,10 +44,10 @@ export default function TitleInfo({ data }) {
         </span>
         <span className="text-white mr-2">1h 26m</span>
         <span>
-          <img src="/images/4k-icon.png" width={16} height={16} alt="4k" />
+          <img src="./images/4k-icon.png" width={16} height={16} alt="4k" />
         </span>
         <span>
-          <img src="/images/hd-icon.png" width={16} height={16} alt="hd" />
+          <img src="./images/hd-icon.png" width={16} height={16} alt="hd" />
         </span>
       </div>
       <div className="bg-[#E50913] py-1 px-2 rounded text-xs text-white font-bold w-fit">

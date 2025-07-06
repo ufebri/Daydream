@@ -69,7 +69,7 @@ export default function Thumbnail() {
       <div className="pb-10  pt-2 bg-gradient-to-b from-transparent via-black to-black">
         <div className="px-5 mb-10 space-y-2">
           <img
-            src="/images/nikahflix.webp"
+            src="./images/nikahflix.webp"
             alt="nikahflix"
             width={56}
             height={15}
