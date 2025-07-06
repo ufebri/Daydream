@@ -1,6 +1,27 @@
-import React from "react";
+import { useMemo } from "react";
 
 export default function TitleInfo({ data }) {
+  const weddingDay = useMemo(() => {
+    // Ubah "20 Juli 2025" → format Date JS
+    const [tgl, bulan, tahun] = data.tanggal_pernikahan.split(" ");
+    const bulanMap = {
+      Januari: 0,
+      Februari: 1,
+      Maret: 2,
+      April: 3,
+      Mei: 4,
+      Juni: 5,
+      Juli: 6,
+      Agustus: 7,
+      September: 8,
+      Oktober: 9,
+      November: 10,
+      Desember: 11,
+    };
+    const date = new Date(tahun, bulanMap[bulan], parseInt(tgl));
+    return date.toLocaleDateString("id-ID", { weekday: "long" });
+  }, [data.tanggal_pernikahan]);
+
   return (
     <div className="space-y-1">
       <div className="flex gap-2 items-center">
@@ -30,15 +51,14 @@ export default function TitleInfo({ data }) {
         </span>
       </div>
       <div className="bg-[#E50913] py-1 px-2 rounded text-xs text-white font-bold w-fit">
-        Coming soon on Saturday, {data.tanggal_pernikahan}
+        Coming Soon {weddingDay}, {data.tanggal_pernikahan}
       </div>
       <div className="pt-2">
         <p className="text-white text-sm leading-[1.15rem] mb-2">
           {data.intro}
         </p>
         <p className="text-[#A3A1A1] text-[10px] leading-[1rem]">
-          "Segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat
-          (kebesaran Allah)" (Q.S Az-Zariyah: 49)
+          {data.surah}
         </p>
       </div>
     </div>

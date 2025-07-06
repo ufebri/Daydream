@@ -16,7 +16,7 @@
     }
   },
   "audio_url": "https://file.garden/aGn9_3WyC3H-psUE/lagunya.mp3",
-  "tanggal_pernikahan": "10 Oct 2025",
+  "tanggal_pernikahan": "10 Oktober 2025",
   "thumbnail_image_url": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/naru-hina-thumbnail.webp",
   "url_video": "https://file.garden/aGn9_3WyC3H-psUE/videonya.mp4",
   "intro": "Konoha dipenuhi bunga sakura. Dua ninja sejati akhirnya bersatu dalam ikatan cinta. Naruto dan Hinata mengundang kalian untuk hadir dalam pernikahan legendaris ini.",
@@ -50,5 +50,8 @@
     "love_story": true,
     "gallery": true,
     "wish": true
-  }
+  },
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253781.7810126935!2d106.6325736130687!3d-6.349963836224802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5dac55515bf%3A0x78c03dc4ec7c7b1!2z44GC44GZ44Go44KJ6YWS5aC0IOOBk-OBruOBryBLb25vaGE!5e0!3m2!1sid!2sid!4v1751786425736!5m2!1sid!2sid",
+  "gmap_url": "https://maps.app.goo.gl/NAeQp8XLWEvvBTEA6",
+  "surah": "Segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah) (Q.S Az-Zariyah: 49)"
 }

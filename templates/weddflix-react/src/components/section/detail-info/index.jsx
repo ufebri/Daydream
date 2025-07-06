@@ -29,7 +29,7 @@ export default function DetailInfo({ data }) {
         <div className="text-center pb-4">
           <div className="mb-2">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.2186564568997!2d105.75484540000001!3d-1.6225196000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e23ad5f50173607%3A0xd1ca675aab4741c9!2sMbak%20Hasiri!5e0!3m2!1sen!2sid!4v1744121209620!5m2!1sen!2sid"
+              src={data.mapEmbedUrl}
               style={{
                 border: 0,
                 width: "100%",
@@ -41,7 +41,7 @@ export default function DetailInfo({ data }) {
           </div>
           <a
             className="text-center underline"
-            href="https://maps.app.goo.gl/CMA4urZ4bbFhvDoA8"
+            href={data.gmap_url}
             target="_blank"
             rel="noopener noreferrer"
           >
