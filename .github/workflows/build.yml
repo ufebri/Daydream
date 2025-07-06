@@ -9,6 +9,11 @@ jobs:
   generate:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      VITE_APP_TABLE_NAME: ${{ secrets.VITE_APP_TABLE_NAME }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,39 +66,25 @@ jobs:
           npm install -g netlify-cli
           netlify deploy --dir=output --prod --site $NETLIFY_SITE_ID
 
-      - name: Upload bundle report
+      - name: Upload visualizer stats per template
+        if: steps.check_output.outputs.deploy == 'true'
+        run: |
+          if [ -f .template-touched ]; then
+            while read template; do
+              STATS_PATH="templates/$template/stats.html"
+              if [ -f "$STATS_PATH" ]; then
+                echo "📦 Found stats for $template → uploading..."
+                mkdir -p artifacts/$template
+                cp "$STATS_PATH" artifacts/$template/
+              else
+                echo "⚠️  No stats.html found for $template"
+              fi
+            done < .template-touched
+          fi
+
+      - name: Upload all stats reports
         uses: actions/upload-artifact@v4
         with:
-          name: bundle-report
-          path: templates/nikahflix-react/stats.html
-
-      - name: Bump NikahFlix Version
-        if: steps.check_output.outputs.deploy == 'true' && contains(steps.touched.outputs.templates, 'nikahflix-react')
-        run: |
-          VERSION_FILE=templates/nikahflix-react/VERSION
-
-          OLD_VERSION=$(cat $VERSION_FILE)
-          MAJOR=$(echo $OLD_VERSION | cut -d. -f1)
-          MINOR=$(echo $OLD_VERSION | cut -d. -f2)
-          PATCH=$(echo $OLD_VERSION | cut -d. -f3)
-          PATCH=$((PATCH + 1))
-          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-
-          echo $NEW_VERSION > $VERSION_FILE
-          echo "🔢 Version bumped: $OLD_VERSION → $NEW_VERSION"
-
-      - name: Commit & Push Version Bump
-        if: steps.check_output.outputs.deploy == 'true' && contains(steps.touched.outputs.templates, 'nikahflix-react')
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          if git diff --quiet; then
-            echo "🔍 No changes to commit."
-          else
-            git add templates/nikahflix-react/VERSION
-            git commit -m "chore(nikahflix): bump version to v$(cat templates/nikahflix-react/VERSION)"
-            git push origin master
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: bundle-reports
+          path: artifacts/
+          if-no-files-found: warn

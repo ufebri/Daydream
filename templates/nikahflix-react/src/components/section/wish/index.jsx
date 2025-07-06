@@ -39,7 +39,6 @@ const colorList = [
   "#748ffc", // biru pastel
 ];
 
-
 export default function WishSection() {
   const lastChildRef = useRef(null);
 
@@ -48,18 +47,26 @@ export default function WishSection() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [slug, setSlug] = useState("unknown");
+  const [slug, setSlug] = useState(null);
 
-  // update slug when query param changes
+  // Ambil slug dari data.json sekali saja
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const s = urlParams.get("slug") || "unknown";
-    setSlug(s);
-  }, [window.location.search]);
+    fetch("./data.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setSlug(data.slug || "unknown");
+      })
+      .catch((e) => {
+        console.error("❌ Gagal fetch data.json:", e);
+        setSlug("unknown");
+      });
+  }, []);
 
-  // fetch wishes for current slug
+  // Fetch data ucapan begitu slug tersedia
   useEffect(() => {
-    fetchData(slug);
+    if (slug) {
+      fetchData(slug);
+    }
   }, [slug]);
 
   const handleSubmit = async (e) => {

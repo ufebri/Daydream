@@ -1,0 +1,27 @@
+name: 🧹 Delete Slug & Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_slug:
+        description: "Slug pengantin yang ingin dihapus"
+        required: true
+
+jobs:
+  delete-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Hapus slug dari output
+        run: |
+          echo "Menghapus folder output/wedding/${{ github.event.inputs.target_slug }}"
+          rm -rf output/wedding/${{ github.event.inputs.target_slug }}
+
+      - name: Deploy ulang ke Netlify dengan --delete
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID:    ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          npm i -g netlify-cli
+          netlify deploy --dir=output --prod --delete --site $NETLIFY_SITE_ID

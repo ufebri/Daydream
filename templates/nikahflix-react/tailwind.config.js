@@ -7,7 +7,7 @@ export default {
         center: true,
       },
       backgroundImage: {
-        thumbnail: "url('/images/thumbnail.webp')",
+        thumbnail: "url('./images/thumbnail.webp')",
       },
     },
   },
