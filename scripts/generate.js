@@ -6,10 +6,15 @@ async function main() {
   let changedFiles = [];
 
   try {
-    const output = execSync("git diff --name-only HEAD~1 HEAD").toString();
+    const output = execSync(
+      "git diff --name-only origin/main...HEAD"
+    ).toString();
+
     changedFiles = output
       .split("\n")
       .filter((f) => f.startsWith("orders/") && f.endsWith(".json"));
+
+    console.log("📂 Changed files:", changedFiles);
   } catch (err) {
     console.warn("⚠️  Gagal baca git diff");
   }
