@@ -9,6 +9,11 @@ jobs:
   generate:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      VITE_APP_TABLE_NAME: ${{ secrets.VITE_APP_TABLE_NAME }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
