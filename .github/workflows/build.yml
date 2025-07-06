@@ -2,7 +2,7 @@ name: Generate & Deploy Wedding Site
 
 on:
   push:
-    paths: ['orders/*.json']
+    paths: ["orders/*.json"]
   workflow_dispatch:
 
 jobs:
@@ -12,16 +12,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run Generate Script
