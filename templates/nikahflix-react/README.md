@@ -1,12 +1,12 @@
-# 🟥 Weddflix – React Wedding Invitation
+# 🟥 Nikahflix – React Wedding Invitation
 
-**Weddflix** is a Netflix-inspired wedding invitation template built with **React + Vite**, and extended by the DayDream project as a dynamic, auto-generated, static site.
+**Nikahflix** is a Netflix-inspired wedding invitation template built with **React + Vite**, and extended by the DayDream project as a dynamic, auto-generated, static site.
 
 ---
 
 ## ✨ Features
 
-- 🎬 Themed like Netflix (Weddflix vibes)
+- 🎬 Themed like Netflix (NikahFlix vibes)
 - 💬 Tamu bisa kirim ucapan via Supabase (real-time)
 - ⚡ Dynamic data via JSON inject (`public/data.json`)
 - 🧱 Fully static build (`npm run build`) – ready for Netlify/Vercel
@@ -54,4 +54,4 @@ This template is maintained as part of [DayDream](https://github.com/ufebri/dayd
 
 ---
 
-© 2025 Weddflix by DayDream
+© 2025 NikahFlix by DayDream
