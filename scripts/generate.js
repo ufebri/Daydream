@@ -7,7 +7,7 @@ async function main() {
 
   try {
     const output = execSync(
-      "git diff --name-only origin/main...HEAD"
+      "git diff --name-only origin/master...HEAD"
     ).toString();
 
     changedFiles = output
