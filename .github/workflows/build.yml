@@ -1,7 +1,7 @@
 name: Generate & Deploy Wedding Site
 
 on:
-  push:
+  pull_request:
     paths: ["orders/*.json"]
   workflow_dispatch:
 
