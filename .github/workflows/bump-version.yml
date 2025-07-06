@@ -1,17 +1,17 @@
-name: 🤖 Auto Commit VERSION (Multi Template)
+name: 🤖 Auto Commit VERSION (After PR Merge to Master)
 
 on:
-  push:
-    paths:
-      - "templates/**/VERSION"
+  pull_request:
+    types: [closed]
+    branches: [master]
 
 jobs:
   auto-version-commit:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: master
 
       - name: Set Git Config
         run: |
@@ -20,8 +20,7 @@ jobs:
 
       - name: Deteksi & Commit Multi-template
         run: |
-          # Cari semua file VERSION yang berubah
-          FILES=$(git diff --name-only HEAD~1 | grep 'templates/.*/VERSION' || true)
+          FILES=$(git show --name-only --pretty="" HEAD | grep 'templates/.*/VERSION' || true)
 
           if [ -z "$FILES" ]; then
             echo "✅ Tidak ada perubahan file VERSION"
@@ -34,22 +33,15 @@ jobs:
           for FILE in $FILES; do
             TEMPLATE=$(echo $FILE | cut -d '/' -f 2)
             VERSION=$(cat "$FILE")
-
-            echo "- $TEMPLATE → v$VERSION"
             echo "chore($TEMPLATE): bump version to v$VERSION" >> commit-msg.txt
-
             git add "$FILE"
           done
 
           echo "📝 Commit message:"
           cat commit-msg.txt
 
-          git commit -F commit-msg.txt
+          git commit -F commit-msg.txt || echo "⚠️ Tidak ada perubahan untuk commit"
 
-          BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH" = "master" ]; then
-            echo "🚀 Push ke origin/master"
-            git push origin master
-          else
-            echo "⛔️ Bukan di branch master ($BRANCH), skip push"
-          fi
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "🪪 Branch: $CURRENT_BRANCH"
+          git push origin HEAD:master
