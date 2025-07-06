@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import fs from "fs";
 import { visualizer } from "rollup-plugin-visualizer";
+import path from "node:path"; // ✅ ini penting
+import fs from "fs";
 
 const version = fs.readFileSync("./VERSION", "utf-8").trim();
 
@@ -15,7 +16,7 @@ export default defineConfig({
     }),
   ],
   define: {
-    __VERSION__: JSON.stringify(version), // 👈 define global constant
+    __VERSION__: JSON.stringify(version),
   },
-  base: "./", // pastikan ini ada untuk static export
+  base: "./",
 });
