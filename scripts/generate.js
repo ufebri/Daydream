@@ -30,6 +30,13 @@ async function main() {
 
   for (const file of changedFiles) {
     const fullPath = path.join(__dirname, "..", file);
+
+    // ✅ Skip jika file tidak ada (sudah dihapus)
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`⚠️  File hilang: ${file} — skip.`);
+      continue;
+    }
+
     const order = JSON.parse(fs.readFileSync(fullPath, "utf-8"));
 
     console.log(`🚀 Generate for: ${order.slug} (${order.templateId})`);
@@ -43,6 +50,7 @@ async function main() {
         console.warn(`⚠️  Unknown templateId: ${order.templateId}`);
     }
   }
+  
 
   fs.writeFileSync(".template-touched", [...templatesBuilt].join("\n"));
 }
