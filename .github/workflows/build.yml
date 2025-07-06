@@ -15,6 +15,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch origin/master manually
+        run: |
+          git remote set-url origin https://github.com/${{ github.repository }}.git
+          git fetch origin master
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -55,6 +60,12 @@ jobs:
         run: |
           npm install -g netlify-cli
           netlify deploy --dir=output --prod --site $NETLIFY_SITE_ID
+
+      - name: Upload bundle report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-report
+          path: templates/nikahflix-react/stats.html
 
       - name: Bump NikahFlix Version
         if: steps.check_output.outputs.deploy == 'true' && contains(steps.touched.outputs.templates, 'nikahflix-react')
