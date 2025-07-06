@@ -5,4 +5,3 @@
 ![Node.js](https://img.shields.io/badge/node-20.x-brightgreen)
 ![Template](https://img.shields.io/badge/template-react-blue)
 ![Status](https://img.shields.io/badge/status-maintained-brightgreen)
-![License](https://img.shields.io/github/license/ufebri/daydream)
