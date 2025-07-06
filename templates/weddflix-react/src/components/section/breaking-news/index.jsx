@@ -1,7 +1,7 @@
 export default function BreakingNews({ data }) {
   return (
     <div>
-      <h2 className="font-bold mb-4">Breaking News</h2>
+      <h2 className="font-bold mb-4">Baru ditambahkan</h2>
       <img
         className="w-full rounded-md"
         height={300}

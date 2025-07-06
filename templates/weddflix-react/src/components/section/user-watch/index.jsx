@@ -16,10 +16,10 @@ export default function UserWatch({ onClick }) {
     <div className="py-10 text-center space-y-28">
       <img
         className="mx-auto scale-110"
-        src="images/NIKAHFIX.webp"
+        src="images/nikahflix.webp"
         width={'125px'}
         height={'48px'}
-        alt="nikahfix"
+        alt="nikahflix"
       />
       <div>
         <p className="mb-10 text-2xl">Who's Watching?</p>
@@ -29,7 +29,7 @@ export default function UserWatch({ onClick }) {
             src="images/guest-icon.png"
             width={100}
             height={100}
-            alt="nikahfix"
+            alt="nikahflix"
           />
           <p className="text-xl mt-2 group-hover:scale-125 group-hover:pt-5">
             {to}
