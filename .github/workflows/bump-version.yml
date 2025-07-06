@@ -1,4 +1,4 @@
-name: 🤖 Auto Commit VERSION (After PR Merge to Master)
+name: 🤖 Auto Commit VERSION (After PR Merge)
 
 on:
   pull_request:
@@ -11,9 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # penting agar bisa diff history
 
-      - name: Set Git Config
+      - name: Setup Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -33,7 +36,7 @@ jobs:
           for FILE in $FILES; do
             TEMPLATE=$(echo $FILE | cut -d '/' -f 2)
             VERSION=$(cat "$FILE")
-            echo "chore($TEMPLATE): bump version to v$VERSION" >> commit-msg.txt
+            echo "chore($TEMPLATE): bump version to v$VERSION [skip deploy]" >> commit-msg.txt
             git add "$FILE"
           done
 
@@ -42,6 +45,6 @@ jobs:
 
           git commit -F commit-msg.txt || echo "⚠️ Tidak ada perubahan untuk commit"
 
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "🪪 Branch: $CURRENT_BRANCH"
-          git push origin HEAD:master
+      - name: Push to master from detached HEAD
+        run: |
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:master
