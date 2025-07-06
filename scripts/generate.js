@@ -10,6 +10,8 @@ async function main() {
       "git diff --name-only origin/master...HEAD"
     ).toString();
 
+    console.log("🧪 Raw git diff output:\n", output);
+
     changedFiles = output
       .split("\n")
       .filter((f) => f.startsWith("orders/") && f.endsWith(".json"));
