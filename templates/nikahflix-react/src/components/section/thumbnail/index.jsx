@@ -16,7 +16,7 @@ export default function Thumbnail() {
   const [isOpenDetail, setIsOpenDetail] = React.useState(false);
 
   useEffect(() => {
-    fetch("/data.json")
+    fetch("./data.json")
       .then((res) => res.json())
       .then((d) => {
         setData(d);

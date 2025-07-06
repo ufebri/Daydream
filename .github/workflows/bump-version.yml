@@ -1,0 +1,55 @@
+name: 🤖 Auto Commit VERSION (Multi Template)
+
+on:
+  push:
+    paths:
+      - "templates/**/VERSION"
+
+jobs:
+  auto-version-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set Git Config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deteksi & Commit Multi-template
+        run: |
+          # Cari semua file VERSION yang berubah
+          FILES=$(git diff --name-only HEAD~1 | grep 'templates/.*/VERSION' || true)
+
+          if [ -z "$FILES" ]; then
+            echo "✅ Tidak ada perubahan file VERSION"
+            exit 0
+          fi
+
+          echo "🔍 Ditemukan file: $FILES"
+          echo "" > commit-msg.txt
+
+          for FILE in $FILES; do
+            TEMPLATE=$(echo $FILE | cut -d '/' -f 2)
+            VERSION=$(cat "$FILE")
+
+            echo "- $TEMPLATE → v$VERSION"
+            echo "chore($TEMPLATE): bump version to v$VERSION" >> commit-msg.txt
+
+            git add "$FILE"
+          done
+
+          echo "📝 Commit message:"
+          cat commit-msg.txt
+
+          git commit -F commit-msg.txt
+
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$BRANCH" = "master" ]; then
+            echo "🚀 Push ke origin/master"
+            git push origin master
+          else
+            echo "⛔️ Bukan di branch master ($BRANCH), skip push"
+          fi
