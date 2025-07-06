@@ -25,7 +25,7 @@ export default function TitleInfo({ data }) {
   return (
     <div className="space-y-1">
       <div className="flex gap-2 items-center">
-        <img src="/favicon.ico" alt="logo" width={18} height={18} />
+        <img src="./favicon.ico" alt="logo" width={18} height={18} />
         <span className="text-[#A3A1A1] text-xs mt-0.5 tracking-widest">
           DOCUMENTER
         </span>
