@@ -1,6 +1,6 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import supabase from '../../../lib/supabaseClient';
-import badwords from 'indonesian-badwords';
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import supabase from "../../../lib/supabaseClient";
+import badwords from "indonesian-badwords";
 
 const WishItem = forwardRef(({ name, message, color }, ref) => (
   <div ref={ref} className="flex gap-2">
@@ -24,45 +24,71 @@ const WishItem = forwardRef(({ name, message, color }, ref) => (
   </div>
 ));
 
-const colorList = ['red', '#ffdb58', '#6bc76b', '#48cae4'];
+const colorList = [
+  "#ff6b6b", // merah muda
+  "#ffa94d", // oranye
+  "#ffd43b", // kuning
+  "#69db7c", // hijau daun
+  "#38d9a9", // hijau toska
+  "#4dabf7", // biru langit
+  "#9775fa", // ungu
+  "#f783ac", // pink terang
+  "#fab005", // kuning keemasan
+  "#63e6be", // teal muda
+  "#a9e34b", // lime
+  "#748ffc", // biru pastel
+];
+
 
 export default function WishSection() {
   const lastChildRef = useRef(null);
 
   const [data, setData] = useState([]);
-  const [name, setName] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [slug, setSlug] = useState("unknown");
+
+  // update slug when query param changes
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const s = urlParams.get("slug") || "unknown";
+    setSlug(s);
+  }, [window.location.search]);
+
+  // fetch wishes for current slug
+  useEffect(() => {
+    fetchData(slug);
+  }, [slug]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (name.length < 3) {
-      setError('Nama minimal 3 karakter!');
+      setError("Nama minimal 3 karakter!");
       return;
     }
 
     if (message.length < 10) {
-      setError('Pesan minimal 10 karakter!');
+      setError("Pesan minimal 10 karakter!");
       return;
     }
 
     if (badwords.flag(name)) {
-      setError('Gabolah kata kasar!');
+      setError("Gabolah kata kasar!");
       return;
     }
 
     setLoading(true);
     setError(null);
 
-    // random color based data length
-    const randomColor = colorList[data.length % colorList.length];
+    const randomColor = colorList[Math.floor(Math.random() * colorList.length)];
     const newmessage = badwords.censor(message);
     const { error } = await supabase
       .from(import.meta.env.VITE_APP_TABLE_NAME) // Replace with your actual table name
       .insert([
-        { name, message: newmessage, color: randomColor }, // Assuming your table has a "name" column
+        { slug, name, message: newmessage, color: randomColor }, // Assuming your table has a "name" column
       ]);
 
     setLoading(false);
@@ -72,31 +98,33 @@ export default function WishSection() {
     } else {
       //scroll to .wish-container last child
 
-      fetchData();
+      fetchData(slug);
       setTimeout(scrollToLastChild, 500);
-      setName('');
-      setMessage('');
+      setName("");
+      setMessage("");
     }
   };
 
-  const fetchData = async () => {
-    const { data, error } = await supabase
-      .from(import.meta.env.VITE_APP_TABLE_NAME) // Replace 'your_table' with the actual table name
-      .select('name, message, color');
+  const fetchData = async (slug) => {
+    console.log("Fetching for slug:", slug);
 
-    if (error) console.error('Error fetching data: ', error);
+    const { data, error } = await supabase
+      .from(import.meta.env.VITE_APP_TABLE_NAME)
+      .select("name, message, color")
+      .eq("slug", slug);
+
+    console.log("Fetched data:", data);
+    console.log("Fetch error:", error);
+
+    if (error) console.error("Error fetching data: ", error);
     else setData(data);
   };
 
   const scrollToLastChild = () => {
     if (lastChildRef.current) {
-      lastChildRef.current.scrollIntoView({ behavior: 'smooth' });
+      lastChildRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div>
