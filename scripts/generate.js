@@ -25,9 +25,17 @@ function isAlreadyBuilt(slug) {
 }
 
 function appendToBuildLog(slug) {
+  const dir = path.dirname(LOG_PATH);
+
+  // Buat folder /logs jika belum ada
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
   const line = `${slug} ✅ ${new Date().toISOString()}\n`;
   fs.appendFileSync(LOG_PATH, line);
 }
+
 
 // 🚀 Entry Point
 async function main() {
