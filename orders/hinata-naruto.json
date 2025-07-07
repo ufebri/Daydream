@@ -1,0 +1,59 @@
+{
+  "slug": "hinata-naruto",
+  "templateId": "nikahflix-react",
+  "pegantin": {
+    "pria": {
+      "foto": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/naruto-bride.webp",
+      "panggilan": "Naruto",
+      "nama": "Naruto Uzumaki",
+      "bapak": "Minato Namikaze",
+      "ibu": "Kushina Uzumaki"
+    },
+    "wanita": {
+      "foto": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/hinata-bride.webp",
+      "panggilan": "Hinata",
+      "nama": "Hinata Hyuga",
+      "bapak": "Hiashi Hyuga",
+      "ibu": "Mrs. Hyuga"
+    }
+  },
+  "audio_url": "https://file.garden/aGn9_3WyC3H-psUE/lagunya.mp3",
+  "tanggal_pernikahan": "10 Oktober 2025",
+  "thumbnail_image_url": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/naru-hina-thumbnail.webp",
+  "url_video": "https://file.garden/aGn9_3WyC3H-psUE/videonya.mp4",
+  "intro": "Konoha dipenuhi bunga sakura. Dua ninja sejati akhirnya bersatu dalam ikatan cinta. Naruto dan Hinata mengundang kalian untuk hadir dalam pernikahan legendaris ini.",
+  "breaking_news_img": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/breaking-news-dummy.webp",
+  "breaking_news_content": "<p>Informasi Resmi dari Desa Konoha!</p><p class='mt-4'>Pernikahan Naruto & Hinata akan dilaksanakan dengan damai. Mohon tidak membawa senjata tajam.</p><p class='mt-4'>Datang tepat waktu atau akan dikejar oleh Anbu.</p><p class='mt-4'>Dengan cinta dan chakra,</p><p>The Hokage Couple</p>",
+  "love_story": [
+    {
+      "image_url": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/episode-1.webp",
+      "title": "Dari Ujian Chunin ke Ujian Hidup",
+      "description": "Hinata menyukai Naruto sejak kecil, dan cinta itu tumbuh seiring petualangan mereka."
+    },
+    {
+      "image_url": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/episode-2.webp",
+      "title": "Pertarungan & Perasaan",
+      "description": "Dalam banyak pertarungan, perasaan itu tetap ada. Sampai akhirnya Naruto menyadari siapa yang selalu mendukungnya."
+    },
+    {
+      "image_url": "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/episode-3.webp",
+      "title": "The Beginning of Forever",
+      "description": "Dengan restu dari seluruh Desa, mereka melangkah ke babak baru bersama."
+    }
+  ],
+  "gallery": [
+    "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/gallery1.webp",
+    "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/gallery2.webp",
+    "https://file.garden/aGn9_3WyC3H-psUE/nikahflix-asset/gallery3.webp"
+  ],
+  "show_menu": {
+    "breaking_news": true,
+    "bride_and_groom": true,
+    "love_story": true,
+    "gallery": true,
+    "wish": true
+  },
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253781.7810126935!2d106.6325736130687!3d-6.349963836224802!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5dac55515bf%3A0x78c03dc4ec7c7b1!2z44GC44GZ44Go44KJ6YWS5aC0IOOBk-OBruOBryBLb25vaGE!5e0!3m2!1sid!2sid!4v1751786425736!5m2!1sid!2sid",
+  "gmap_url": "https://maps.app.goo.gl/NAeQp8XLWEvvBTEA6",
+  "surah": "Segala sesuatu Kami ciptakan berpasang-pasangan agar kamu mengingat (kebesaran Allah) \n (Q.S Az-Zariyah: 49)"
+}

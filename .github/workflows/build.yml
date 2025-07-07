@@ -73,26 +73,3 @@ jobs:
           name: build-log
           path: logs/build.log
           if-no-files-found: warn
-
-      - name: Upload visualizer stats per template
-        if: steps.check_output.outputs.deploy == 'true'
-        run: |
-          if [ -f .template-touched ]; then
-            while read template; do
-              STATS_PATH="templates/$template/stats.html"
-              if [ -f "$STATS_PATH" ]; then
-                echo "📦 Found stats for $template → uploading..."
-                mkdir -p artifacts/$template
-                cp "$STATS_PATH" artifacts/$template/
-              else
-                echo "⚠️  No stats.html found for $template"
-              fi
-            done < .template-touched
-          fi
-
-      - name: Upload all stats reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: bundle-reports
-          path: artifacts/
-          if-no-files-found: warn
