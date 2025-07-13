@@ -1,6 +1,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import supabase from "../../../lib/supabaseClient";
 import badwords from "indonesian-badwords";
+import data from "@/data"; // ✅ gunakan import static
 
 const WishItem = forwardRef(({ name, message, color }, ref) => (
   <div ref={ref} className="flex gap-2">
@@ -14,7 +15,7 @@ const WishItem = forwardRef(({ name, message, color }, ref) => (
           minWidth: 24,
           minHeight: 24,
         }}
-        className=" rounded-sm"
+        className="rounded-sm"
       />
     </div>
     <div>
@@ -25,86 +26,56 @@ const WishItem = forwardRef(({ name, message, color }, ref) => (
 ));
 
 const colorList = [
-  "#ff6b6b", // merah muda
-  "#ffa94d", // oranye
-  "#ffd43b", // kuning
-  "#69db7c", // hijau daun
-  "#38d9a9", // hijau toska
-  "#4dabf7", // biru langit
-  "#9775fa", // ungu
-  "#f783ac", // pink terang
-  "#fab005", // kuning keemasan
-  "#63e6be", // teal muda
-  "#a9e34b", // lime
-  "#748ffc", // biru pastel
+  "#ff6b6b",
+  "#ffa94d",
+  "#ffd43b",
+  "#69db7c",
+  "#38d9a9",
+  "#4dabf7",
+  "#9775fa",
+  "#f783ac",
+  "#fab005",
+  "#63e6be",
+  "#a9e34b",
+  "#748ffc",
 ];
 
 export default function WishSection() {
   const lastChildRef = useRef(null);
-
-  const [data, setData] = useState([]);
+  const [dataList, setDataList] = useState([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [slug, setSlug] = useState(null);
 
-  // Ambil slug dari data.json sekali saja
+  const slug = data.slug || "unknown"; // ✅ langsung ambil dari static data
+
   useEffect(() => {
-    fetch("./data.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setSlug(data.slug || "unknown");
-      })
-      .catch((e) => {
-        console.error("❌ Gagal fetch data.json:", e);
-        setSlug("unknown");
-      });
+    fetchData(slug);
   }, []);
-
-  // Fetch data ucapan begitu slug tersedia
-  useEffect(() => {
-    if (slug) {
-      fetchData(slug);
-    }
-  }, [slug]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (name.length < 3) {
-      setError("Nama minimal 3 karakter!");
-      return;
-    }
-
-    if (message.length < 10) {
-      setError("Pesan minimal 10 karakter!");
-      return;
-    }
-
-    if (badwords.flag(name)) {
-      setError("Gabolah kata kasar!");
-      return;
-    }
+    if (name.length < 3) return setError("Nama minimal 3 karakter!");
+    if (message.length < 10) return setError("Pesan minimal 10 karakter!");
+    if (badwords.flag(name)) return setError("Gabolah kata kasar!");
 
     setLoading(true);
     setError(null);
 
     const randomColor = colorList[Math.floor(Math.random() * colorList.length)];
     const newmessage = badwords.censor(message);
+
     const { error } = await supabase
-      .from(import.meta.env.VITE_APP_TABLE_NAME) // Replace with your actual table name
-      .insert([
-        { slug, name, message: newmessage, color: randomColor }, // Assuming your table has a "name" column
-      ]);
+      .from(import.meta.env.VITE_APP_TABLE_NAME)
+      .insert([{ slug, name, message: newmessage, color: randomColor }]);
 
     setLoading(false);
 
     if (error) {
       setError(error.message);
     } else {
-      //scroll to .wish-container last child
-
       fetchData(slug);
       setTimeout(scrollToLastChild, 500);
       setName("");
@@ -113,18 +84,16 @@ export default function WishSection() {
   };
 
   const fetchData = async (slug) => {
-    console.log("Fetching for slug:", slug);
-
     const { data, error } = await supabase
       .from(import.meta.env.VITE_APP_TABLE_NAME)
       .select("name, message, color")
       .eq("slug", slug);
 
-    console.log("Fetched data:", data);
-    console.log("Fetch error:", error);
-
-    if (error) console.error("Error fetching data: ", error);
-    else setData(data);
+    if (error) {
+      console.error("Error fetching data: ", error);
+    } else {
+      setDataList(data);
+    }
   };
 
   const scrollToLastChild = () => {
@@ -139,19 +108,19 @@ export default function WishSection() {
         Wish for the couple
       </h2>
       <div className="max-h-[20rem] overflow-auto space-y-4 wish-container">
-        {data.map((item, index) => (
+        {dataList.map((item, index) => (
           <WishItem
+            key={index}
             name={item.name}
             message={item.message}
             color={item.color}
-            key={index}
-            ref={index === data.length - 1 ? lastChildRef : null}
+            ref={index === dataList.length - 1 ? lastChildRef : null}
           />
         ))}
       </div>
+
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         {error && <div className="text-red-500 text-sm">{error}</div>}
-
         <div className="space-y-1">
           <label>Name</label>
           <input

@@ -1,35 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DetailInfo from "../detail-info";
 import Loader from "../../ui/loader";
+import data from "@/data"; // 🟢 static import dari data.json
 
-const TagItem = ({ title }) => {
-  return (
-    <li className="bg-[#4D4D4D] py-1 px-2 rounded-xl text-xs text-white">
-      {title}
-    </li>
-  );
-};
+const TagItem = ({ title }) => (
+  <li className="bg-[#4D4D4D] py-1 px-2 rounded-xl text-xs text-white">
+    {title}
+  </li>
+);
 
 export default function Thumbnail() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isOpenDetail, setIsOpenDetail] = React.useState(false);
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
 
   useEffect(() => {
-    fetch("./data.json")
-      .then((res) => res.json())
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    const scrollThreshold = 1; // minimum scroll distance in pixels
+    const scrollThreshold = 1;
 
     const handleScroll = () => {
       if (window.scrollY > scrollThreshold) {
@@ -53,12 +37,12 @@ export default function Thumbnail() {
     };
   }, []);
 
-  // Simulate loading state
-  if (loading || !data?.pegantin) return <Loader />;
+  if (!data?.pegantin) return <Loader />;
 
   if (isOpenDetail) {
     return <DetailInfo data={data} />;
   }
+
   return (
     <div
       style={{
@@ -66,7 +50,7 @@ export default function Thumbnail() {
       }}
       className="min-h-screen bg-cover bg-center bg-no-repeat flex flex-col justify-end mb-10"
     >
-      <div className="pb-10  pt-2 bg-gradient-to-b from-transparent via-black to-black">
+      <div className="pb-10 pt-2 bg-gradient-to-b from-transparent via-black to-black">
         <div className="px-5 mb-10 space-y-2">
           <img
             src="./images/nikahflix.webp"
@@ -98,7 +82,7 @@ export default function Thumbnail() {
             </ul>
           </div>
         </div>
-        <div className="w-full text-center  ">
+        <div className="w-full text-center">
           <button
             onClick={() => setIsOpenDetail(true)}
             className="uppercase w-full text-xl font-semibold"
@@ -107,7 +91,7 @@ export default function Thumbnail() {
           </button>
           <div className="rotate-180">
             <svg
-              className="w-6 h-6 mx-auto mb-2 animate-bounce "
+              className="w-6 h-6 mx-auto mb-2 animate-bounce"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
