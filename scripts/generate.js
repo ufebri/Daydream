@@ -1,11 +1,15 @@
-// scripts/generate.js
-
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 
 const LOG_PATH = path.join(__dirname, "..", "logs", "build.log");
 const ORDERS_PATH = path.join(__dirname, "..", "orders");
+
+// 💡 Adapter map: templateId → handler
+const adapters = {
+  "nikahflix-react": require("./adapters/build-nikahflix"),
+  // kamu bisa tambah lagi: "selaras-vue": require("./adapters/build-selaras"),
+};
 
 function getArgs() {
   const args = process.argv.slice(2);
@@ -26,16 +30,12 @@ function isAlreadyBuilt(slug) {
 
 function appendToBuildLog(slug) {
   const dir = path.dirname(LOG_PATH);
-
-  // Buat folder /logs jika belum ada
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-
   const line = `${slug} ✅ ${new Date().toISOString()}\n`;
   fs.appendFileSync(LOG_PATH, line);
 }
-
 
 // 🚀 Entry Point
 async function main() {
@@ -43,7 +43,6 @@ async function main() {
   const templatesBuilt = new Set();
   const buildTargets = [];
 
-  // 🎯 Case: build satu order saja
   if (slug) {
     const file = path.join(ORDERS_PATH, `${slug}.json`);
     if (!fs.existsSync(file)) {
@@ -56,8 +55,6 @@ async function main() {
     } else {
       console.log(`⏭️  Sudah dibuild: ${slug}, skip.`);
     }
-
-    // 🔁 Case: detect file yang berubah via git diff
   } else {
     try {
       const output = execSync(
@@ -71,7 +68,6 @@ async function main() {
 
       for (const file of changedFiles) {
         const fullPath = path.join(__dirname, "..", file);
-
         if (!fs.existsSync(fullPath)) {
           console.warn(`⚠️  File hilang: ${file} — skip.`);
           continue;
@@ -91,7 +87,7 @@ async function main() {
         return;
       }
     } catch (err) {
-      console.warn("⚠️  Gagal baca git diff");
+      console.warn("⚠️  Gagal baca git diff:", err.message);
       return;
     }
   }
@@ -103,17 +99,22 @@ async function main() {
 
     console.log(`🚀 Build: ${slug} (${templateId})`);
 
-    switch (templateId) {
-      case "nikahflix-react":
-        await require("./adapters/nikahflix-react")(order);
-        templatesBuilt.add("nikahflix-react");
-        appendToBuildLog(slug);
-        break;
-      default:
-        console.warn(`⚠️  Unknown templateId: ${templateId}`);
+    const adapter = adapters[templateId];
+    if (!adapter) {
+      console.warn(`⚠️  Unknown templateId: ${templateId}`);
+      continue;
+    }
+
+    try {
+      await adapter(order);
+      templatesBuilt.add(templateId);
+      appendToBuildLog(slug);
+    } catch (err) {
+      console.error(`❌ Gagal build ${slug}:`, err.message);
     }
   }
 
+  // Tulis file .template-touched (untuk cache invalidation Netlify, dll)
   fs.writeFileSync(".template-touched", [...templatesBuilt].join("\n"));
 }
 
